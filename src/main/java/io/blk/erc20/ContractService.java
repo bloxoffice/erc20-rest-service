@@ -1,6 +1,8 @@
 package io.blk.erc20;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -78,10 +80,10 @@ public class ContractService {
         }
     }
 
-    public long totalSupply(String contractAddress) throws Exception {
+    public double totalSupply(String contractAddress) throws Exception {
         HumanStandardToken humanStandardToken = load(contractAddress);
         try {
-            return extractLongValue(humanStandardToken.totalSupply().send());
+            return balanceWithDecimals(contractAddress, humanStandardToken.totalSupply().send());
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
@@ -117,15 +119,32 @@ public class ContractService {
         }
     }
 
-    public long balanceOf(String contractAddress, String ownerAddress) throws Exception {
+    public double balanceOf(String contractAddress, String ownerAddress) throws Exception {
         HumanStandardToken humanStandardToken = load(contractAddress);
         try {
-            return extractLongValue(humanStandardToken.balanceOf(ownerAddress).send());
+
+            //Convert from decimals to double version
+            return balanceWithDecimals(contractAddress, humanStandardToken.balanceOf(ownerAddress).send());
+           // return extractLongValue(humanStandardToken.balanceOf(ownerAddress).send());
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
     }
 
+
+    public double balanceWithDecimals(String contractAddress, BigInteger balance){
+        long decimals = 0;
+        BigDecimal doubleBalance= new BigDecimal(0);
+        try {
+            decimals = decimals(contractAddress);
+            BigDecimal valueDecimal = new BigDecimal(balance);
+            doubleBalance = valueDecimal.divide(new BigDecimal(Math.pow(10, decimals)), 10, RoundingMode.HALF_DOWN);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return doubleBalance.doubleValue();
+    }
     public String symbol(String contractAddress) throws Exception {
         HumanStandardToken humanStandardToken = load(contractAddress);
         try {
@@ -259,4 +278,5 @@ public class ContractService {
             this.value = approvalEventResponse._value.longValueExact();
         }
     }
+
 }

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -27,10 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class Controller {
 
     private final ContractService ContractService;
+    private final NodeConfiguration nodeConfiguration;
+
 
     @Autowired
-    public Controller(ContractService ContractService) {
+    public Controller(ContractService ContractService, NodeConfiguration nodeConfiguration) {
         this.ContractService = ContractService;
+        this.nodeConfiguration = nodeConfiguration;
     }
 
     @ApiOperation("Application configuration")
@@ -89,7 +93,7 @@ public class Controller {
 
     @ApiOperation("Get total supply of tokens")
     @RequestMapping(value = "/{contractAddress}/totalSupply", method = RequestMethod.GET)
-    long totalSupply(@PathVariable String contractAddress) throws Exception {
+    double totalSupply(@PathVariable String contractAddress) throws Exception {
         return ContractService.totalSupply(contractAddress);
     }
 
@@ -129,7 +133,7 @@ public class Controller {
     @ApiOperation("Get token balance for address")
     @RequestMapping(
             value = "/{contractAddress}/balanceOf/{ownerAddress}", method = RequestMethod.GET)
-    long balanceOf(
+    double balanceOf(
             @PathVariable String contractAddress,
             @PathVariable String ownerAddress) throws Exception {
         return ContractService.balanceOf(contractAddress, ownerAddress);
@@ -139,6 +143,17 @@ public class Controller {
     @RequestMapping(value = "/{contractAddress}/symbol", method = RequestMethod.GET)
     String symbol(@PathVariable String contractAddress) throws Exception {
         return ContractService.symbol(contractAddress);
+    }
+
+
+    @ApiOperation("Get BBTC balance")
+    @RequestMapping(value="/bbtcbalance/{address}", method = RequestMethod.GET)
+    double bbtcbalance(@PathVariable String address) throws Exception {
+
+        System.out.println("address  "+address);
+        System.out.println("caddress  "+this.nodeConfiguration.getBbtcContractAddress());
+
+        return ContractService.balanceOf(this.nodeConfiguration.getBbtcContractAddress(), address);
     }
 
     @ApiOperation(
