@@ -14,4 +14,4 @@ nodeEndpoint: http://127.0.0.1:8545
 # Note - this address must be already unlocked in the client
 fromAddress: "0x851ad848737fd776326fab205eb9bead50141d4d"
 
-bbtcContractAddress: "0x8f36ed87aff526c1521bd16e5e8790acc5c6f5ba"
+bbtcContractAddress: "0x1aeb9b1d88d370faac4c48edbfa3c10195867d66"
