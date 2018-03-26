@@ -39,3 +39,7 @@ gradle-app.setting
 *.log
 logs
 /out
+
+src/main/resources/config/application.yml
+
+/env

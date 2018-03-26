@@ -1,4 +1,4 @@
-package io.blk.erc20;
+package io.bloxoffice;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 
-import io.blk.erc20.generated.HumanStandardToken;
+import io.bloxoffice.generated.HumanStandardToken;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;

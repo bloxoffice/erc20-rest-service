@@ -1,4 +1,4 @@
-package io.blk.erc20;
+package io.bloxoffice;
 
 import java.math.BigInteger;
 import java.util.Arrays;

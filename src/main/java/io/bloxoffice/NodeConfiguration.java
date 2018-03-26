@@ -1,4 +1,4 @@
-package io.blk.erc20;
+package io.bloxoffice;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -14,6 +14,8 @@ public class NodeConfiguration {
 
     private String nodeEndpoint;
     private String fromAddress;
-
     private String bbtcContractAddress;
+    private String couchbaseHostName;
+    private String couchbaseBucketName;
+    private String couchbasePassword;
 }
