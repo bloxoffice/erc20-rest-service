@@ -121,12 +121,19 @@ public class AccessControlService {
     Session session = sessionRepository.findOne(sessionKey);
     if(session == null){
       validSession = false;
-    } else if(session.getSessionId().equalsIgnoreCase(sessionKey)){
+    } else if(!session.getSessionId().equalsIgnoreCase(sessionKey)){
       validSession = false;
     } else {
       validSession = true;
     }
     return validSession;
+  }
+
+  public void signout(String sessionId){
+    Session session = sessionRepository.findOne(sessionId);
+    if(session != null){
+      sessionRepository.delete(session);
+    }
   }
 
 }
